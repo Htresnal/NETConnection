@@ -45,10 +45,8 @@ public class NETConnection
     }
 
     public void init(int Port, String address_IP) throws IOException {
-        System.out.println("NETConnection: Connecting...");
         try {
             dcm_Socket = new Socket(address_IP, Port);
-            System.out.println("NETConnection: Connected to: "+address_IP+":"+Port);
             outputBufferedStream = new BufferedOutputStream(dcm_Socket.getOutputStream());
             inputBufferedStream = new BufferedInputStream (dcm_Socket.getInputStream());
             inputStreamReader = new BufferedReader(new InputStreamReader(inputBufferedStream));
@@ -61,11 +59,9 @@ public class NETConnection
     }
 
     public void init(int Port) throws IOException {
-        System.out.println("NETConnection: Setting up a server...");
         try
         {
             dcm_serverSocket = new ServerSocket(Port);
-            System.out.println("NETConnection: Server at port "+Port+" has been initialized.");
             //Server-side stream loading was moved to recvConnection
         }
         catch (IOException e)
@@ -82,14 +78,11 @@ public class NETConnection
     public void recvConnection()
     {
         try {
-            System.out.println("NETConnection: Waiting for an incoming connection...");
             dcm_Socket=dcm_serverSocket.accept();
-            System.out.println("NETConnection: Connection accepted. Initializing streams...");
             outputBufferedStream = new BufferedOutputStream(dcm_Socket.getOutputStream());
             inputBufferedStream = new BufferedInputStream(dcm_Socket.getInputStream());
             inputStreamReader = new BufferedReader(new InputStreamReader(inputBufferedStream));
             outputStreamReader= new BufferedWriter(new OutputStreamWriter(outputBufferedStream));
-            System.out.println("NETConnection: Streams up. Waiting for commands...");
         }
         catch (IOException e)
         {

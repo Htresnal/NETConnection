@@ -68,39 +68,10 @@ public class NETConnection_Files extends NETConnection
 
     public void sendFile() throws java.io.IOException
     {
-        System.out.println("NETConnection_Files: Sending file data...");
-        /*
-        while ((buffByteArrSize = inputFileBufferedStream.read(byteEArr, 0, buffByteArrSize)) > 0)
-        {
-            outputFileBufferedStream.write(byteEArr, 0, buffByteArrSize);
-            System.out.println(byteEArr);
-        }
-        */
         while ((inputFileBufferedStream.read(byteEArr)) > 0)
         {
             outputFileBufferedStream.write(byteEArr);
-            System.out.println(Integer.toString(byteEArr.length));
         }
-        System.out.println("NETConnection_Files: File sent.");
-
-
-
-        /*
-        int count;
-        while ((count = inputStream.read(byteArr)) > 0)
-        {
-            outputBufferedStream.write(byteArr, 0, count);
-        }
-
-        outputStream = new BufferedOutputStream(outputBufferedStream);
-        bytesRead = inputBufferedStream.read(byteArr, 0, byteArr.length);
-        currentPart = bytesRead;
-
-        do{
-            bytesRead = inputBufferedStream.read(byteArr, currentPart, (byteArr.length - currentPart));
-            if (bytesRead >= 0) currentPart = currentPart + bytesRead;
-        } while (bytesRead > -1);
-        */
     }
 
     //RecvFile
@@ -110,16 +81,10 @@ public class NETConnection_Files extends NETConnection
             dcm_File=new File(fileName);
             outputFileStream=new FileOutputStream(dcm_File);
 
-            System.out.println("[RECVFILE]: Initialized.. Starting the reading cycle...");
-
             while ((buffByteArrSize = inputBufferedStream.read(byteEArr)) > 0)
             {
                 outputFileStream.write(byteEArr,0,buffByteArrSize);
-                System.out.println(buffByteArrSize);
             }
-
-            System.out.println("[RECVFILE]: Reading cycle finished.");
-
             outputFileStream.close();
 
             if (st_openOnDownload) {
