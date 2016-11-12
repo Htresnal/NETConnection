@@ -44,8 +44,7 @@ public class NETConnection
         dcm_ConnType = ConnStatus.SERVER;
     }
 
-    public void init(int Port, String address_IP)
-    {
+    public void init(int Port, String address_IP) throws IOException {
         System.out.println("NETConnection: Connecting...");
         try {
             dcm_Socket = new Socket(address_IP, Port);
@@ -55,20 +54,13 @@ public class NETConnection
             inputStreamReader = new BufferedReader(new InputStreamReader(inputBufferedStream));
             outputStreamReader= new BufferedWriter(new OutputStreamWriter(outputBufferedStream));
         }
-        catch (IOException e) {
-            try
-            {
-                throw new IOException("NETConnection: [ERROR] Unable to connect to: "+address_IP+":"+Port);
-            }
-            catch (IOException e1)
-            {
-                e1.printStackTrace();
-            }
+        catch (IOException e)
+        {
+            throw e;
         }
     }
 
-    public void init(int Port)
-    {
+    public void init(int Port) throws IOException {
         System.out.println("NETConnection: Setting up a server...");
         try
         {
@@ -78,14 +70,7 @@ public class NETConnection
         }
         catch (IOException e)
         {
-            try
-            {
-                throw e;
-            }
-            catch (IOException e1)
-            {
-                e1.printStackTrace();
-            }
+            throw e;
         }
     }
 
@@ -105,7 +90,9 @@ public class NETConnection
             inputStreamReader = new BufferedReader(new InputStreamReader(inputBufferedStream));
             outputStreamReader= new BufferedWriter(new OutputStreamWriter(outputBufferedStream));
             System.out.println("NETConnection: Streams up. Waiting for commands...");
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             e.printStackTrace();
         }
     }
@@ -119,25 +106,12 @@ public class NETConnection
         }
         catch (IOException e)
         {
-            try
-            {
-                throw new IOException("NETConnection: [ERROR] Unable to send data through socket at sendSentence(String)");
-            }
-            catch (IOException e1)
-            {
-                e1.printStackTrace();
-            }
+            throw e;
         }
     }
 
     public String getSentence() throws IOException
     {
-        /*
-        String tmpString;
-            while ((tmpString = inputStreamReader.readLine()) != null) {
-                System.out.println(tmpString);
-            }
-        */
         StringBuffer sb = new StringBuffer();
         char[] tmpBuffChar;
         do {
@@ -147,15 +121,6 @@ public class NETConnection
         } while (inputStreamReader.ready());
 
         return sb.toString();
-
-        /*
-        while((buffByteArrSize=inputStreamReader.read(byteArr))!=-1)
-        {
-            System.out.println(new String(byteArr));
-        }
-        System.out.println(new String(byteArr)+" |Size: "+buffByteArrSize);
-        return new String(byteArr).substring(0, buffByteArrSize);
-        */
     }
 
     public void deInit() throws java.io.IOException
@@ -166,9 +131,10 @@ public class NETConnection
             if (inputBufferedStream != null) inputBufferedStream.close();
             if (outputBufferedStream != null) outputBufferedStream.close();
             if (inputStreamReader != null) inputStreamReader.close();
+            if (outputStreamReader != null) outputStreamReader.close();
         }
         catch (IOException e) {
-            throw new IOException("NETConnection: [ERROR] Unable to stop buffers");
+            throw e;
         }
     }
 }
